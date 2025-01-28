@@ -1,0 +1,201 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    background:
+            linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px repeat,
+            linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0 repeat,
+            linear-gradient(27deg, #222 5px, transparent 5px) 0 10px repeat,
+            linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px repeat,
+            linear-gradient(90deg, #1b1b1b 10px, transparent 10px) repeat,
+            linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424) repeat;
+    background-color: #131313;
+    background-size: 20px 20px;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.bg-gray {
+    background-color: #474a51;
+}
+
+.muted-text {
+    color: #b4b9c2;
+}
+
+.card a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    filter: brightness(1.1);
+}
+
+.scroll-arrow-left {
+    position: absolute;
+    top: 50%;
+    left: -20px;
+}
+
+.scroll-arrow-right {
+    position: absolute;
+    top: 50%;
+    right: -20px;
+}
+
+.btn-view.active {
+    background-color: #2c2f33;
+    border-color: #2c2f33;
+}
+
+.btn-custom-select {
+    height: 38px;
+    padding: 0.375rem 0.75rem;
+    padding-right: 2rem; /* 右側の余白を増やして矢印用のスペースを確保 */
+    border-radius: 0.25rem;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none; /* デフォルトの矢印を完全に消す */
+    cursor: pointer;
+}
+
+/* カスタム矢印のスタイリング */
+.position-relative i.fas.fa-caret-down {
+    pointer-events: none; /* 矢印をクリックできないようにする */
+}
+
+/* Image Size */
+.card-img-cover-100 {
+    height: 100px;
+    object-fit: cover;
+}
+
+.page-img-cover-400 {
+    height: 400px;
+    width: 100%;
+    object-fit: cover;
+    filter: blur(1px) brightness(0.7);
+}
+
+.dropdown-menu {
+    top: 100% !important;
+    bottom: auto !important;
+    transform: translate(0, 0) !important;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Post.php */
+.post-layout {
+    display: flex;
+    min-height: calc(100vh - 56px);
+    margin-top: 56px;
+    padding: 3rem 0;
+}
+
+.post-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.post-container {
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.back-button {
+    position: absolute;
+    left: -40px;
+    top: 0;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 3.8rem;
+    margin-right: 2rem;
+}
+
+.post-content {
+    flex: 1;
+}
+
+.post-meta {
+    font-size: 0.7rem;
+}
+
+.post-img-container {
+    min-height: 300px;
+    background-color: #2a2a2a;
+    display: flex;
+    align-items: center;
+    margin: 0 1rem 1rem 0;
+}
+
+.post-img-container img {
+    width: 100%;
+    height: auto;
+}
+
+/* PostGrid.php */
+#postsGrid {
+    max-width: 1720px;
+    margin: 0;
+    position: relative;
+}
+
+.grid-view {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.grid-view .grid-sizer {
+    display: none;
+}
+
+.grid-view .grid-item {
+    width: 100%;
+}
+
+.grid-view .card-img-cover-300 {
+    aspect-ratio: 3 / 2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+}
+
+.waterfall-view {
+    width: 100%;
+}
+
+.waterfall-view .grid-sizer {
+    display: block;
+}
+
+.waterfall-view .grid-item {
+    margin-bottom: 16px;
+    transition: none; /* No animation for initial loaded items */
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.waterfall-view .grid-item.invisible {
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out; /* Animation for infinite scroll */
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.waterfall-view .grid-sizer,
+.waterfall-view .grid-item {
+    width: calc(25% - 12px);
+}
+
+.waterfall-view .grid-item img {
+    transition: opacity 0.4s ease-out;
+}

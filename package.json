@@ -1,0 +1,31 @@
+{
+  "name": "imgdock",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "./node_modules/.bin/vite",
+    "build": "./node_modules/.bin/vite build",
+    "preview": "./node_modules/.bin/vite preview"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "@uppy/core": "^4.4.1",
+    "@uppy/dashboard": "^4.3.1",
+    "@uppy/xhr-upload": "^4.3.2",
+    "bootstrap": "^5.3.3",
+    "imagesloaded": "^5.0.0",
+    "infinite-scroll": "^4.0.1",
+    "masonry-layout": "^4.2.2"
+  },
+  "devDependencies": {
+    "@types/bootstrap": "^5.2.10",
+    "@types/imagesloaded": "^4.1.6",
+    "@types/infinite-scroll": "^4.0.4",
+    "@types/masonry-layout": "^4.2.8",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7"
+  },
+  "overrides": {
+    "rollup": "npm:@rollup/wasm-node"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "tk/imgdock",
+  "description": "A simple online image hosting service",
+  "license": "proprietary",
+  "require": {
+    "friendsofphp/php-cs-fixer": "^3.65",
+    "nesbot/carbon": "^3.8",
+    "aws/aws-sdk-php": "^3.336",
+    "fakerphp/faker": "^1.24"
+  },
+  "autoload": {
+    "psr-4": {
+      "Commands\\": "src/Commands",
+      "Controllers\\": "src/Controllers",
+      "Database\\": "src/Database",
+      "Exceptions\\": "src/Exceptions",
+      "Helpers\\": "src/Helpers",
+      "Response\\": "src/Response",
+      "Views\\": "src/Views"
+    }
+  }
+}
