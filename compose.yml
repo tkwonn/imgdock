@@ -46,7 +46,7 @@ services:
     entrypoint: sh
     command: >-
       -c '     
-        mkdir -p /data/images && 
+        mkdir -p /data/imgdock-dev-storage && 
         minio server /data --console-address :9001'
 
   memcached:
