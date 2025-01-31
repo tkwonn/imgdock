@@ -58,4 +58,15 @@
             </div>
         <?php endforeach; ?>
     </div>
+    <!-- End of Content Message -->
+    <div id="endOfContent" class="text-center text-light" style="display: none;">
+        End of content
+    </div>
+</div>
+
+<!-- Loading Spinner -->
+<div id="loadingSpinner" class="text-center my-3">
+    <div class="spinner-border text-light" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
 </div>

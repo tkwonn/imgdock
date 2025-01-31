@@ -21,6 +21,8 @@ interface GridHandlerOptions {
 
 export class GridLayoutHandler {
     private readonly container: HTMLElement;
+    private readonly loadingSpinner: HTMLElement;
+    private readonly endOfContentMessage: HTMLElement;
     private masonryInstance: Masonry | null = null;
     private infScroll: InfiniteScroll | null = null;
     private buttons: NodeListOf<HTMLButtonElement>;
@@ -31,6 +33,9 @@ export class GridLayoutHandler {
 
     constructor(options: GridHandlerOptions = {}) {
         this.container = document.getElementById('postsGrid') as HTMLElement;
+        this.loadingSpinner = document.getElementById('loadingSpinner') as HTMLElement;
+        this.endOfContentMessage = document.getElementById('endOfContent') as HTMLElement;
+
         this.buttons   = document.querySelectorAll('.btn-view');
         this.tagId = options.tagId;
 
@@ -52,8 +57,7 @@ export class GridLayoutHandler {
             this.infScroll = null;
         }
 
-        const pathBase = this.buildPath();
-        console.log('initInfiniteScroll with:', pathBase);
+        const pathBase: string = this.buildPath();
 
         this.infScroll = new InfiniteScroll(this.container, {
             path: pathBase,
@@ -63,15 +67,22 @@ export class GridLayoutHandler {
             outlayer: undefined,
         });
 
+        this.infScroll.on('request', (): void => {
+            this.loadingSpinner.style.visibility = 'show';
+            this.endOfContentMessage.style.display = 'none';
+        });
+
         // Convert JSON to card HTML that is received at the load event → appendItems() → Reposition if Masonry exists
-        this.infScroll.on('load', (data: ApiResponse) => {
+        this.infScroll.on('load', (data: ApiResponse): void => {
+            this.loadingSpinner.style.visibility = 'hidden';
             if (!data.posts || !data.posts.length) {
+                this.endOfContentMessage.style.display = 'block';
                 this.infScroll?.destroy();
                 return;
             }
 
             // Card HTML with .invisible class
-            const itemsHTML = data.posts.map((post) => `
+            const itemsHTML: string = data.posts.map((post: PostData): string => `
             <div class="grid-item invisible" data-id="${post.s3_key}">
               <div class="card bg-gray">
                 <a href="${post.post_url}" class="text-decoration-none">
@@ -97,11 +108,11 @@ export class GridLayoutHandler {
             </div>
           `).join('');
 
-            const tempDiv = document.createElement('div');
+            const tempDiv: HTMLDivElement = document.createElement('div');
             tempDiv.innerHTML = itemsHTML;
-            const newItems = tempDiv.querySelectorAll('.grid-item');
+            const newItems: NodeListOf<HTMLDivElement> = tempDiv.querySelectorAll('.grid-item');
 
-            imagesLoaded(newItems, () => {
+            imagesLoaded(newItems, (): void => {
                 this.infScroll?.appendItems(newItems);
                 if (this.masonryInstance) {
                     // @ts-ignore
@@ -111,7 +122,7 @@ export class GridLayoutHandler {
                 }
 
                 // invisible → visible
-                newItems.forEach((item) => item.classList.remove('invisible'));
+                newItems.forEach((item: HTMLDivElement): void => item.classList.remove('invisible'));
             });
         });
     }
@@ -119,31 +130,25 @@ export class GridLayoutHandler {
     private initSortChange(): void {
         if (!this.sortSelect) return;
 
-        this.sortSelect.addEventListener('change', () => {
+        this.sortSelect.addEventListener('change', (): void => {
             this.sort = this.sortSelect!.value;
-            console.log('Sort changed to:', this.sort);
 
-            // (1) 既存の grid-item をすべて削除 (ただし .grid-sizer は残す)
-            const items = this.container.querySelectorAll('.grid-item');
+            const items: NodeListOf<Element> = this.container.querySelectorAll('.grid-item');
             items.forEach(item => item.remove());
 
-            // (2) Infinite Scroll destroy
             if (this.infScroll) {
                 this.infScroll.destroy();
                 this.infScroll = null;
             }
 
-            // (3) Masonry destroy
             if (this.masonryInstance) {
                 // @ts-ignore
                 this.masonryInstance.destroy();
                 this.masonryInstance = null;
             }
 
-            // (4) 再初期化
             this.initInfiniteScroll();
 
-            // (5) 今、WaterfallViewなら outlayer を再セット
             if (this.container.classList.contains('waterfall-view')) {
                 this.setWaterfallView();
             }
@@ -157,7 +162,7 @@ export class GridLayoutHandler {
     }
 
     private buildPath(): string {
-        let path = `/api/posts?sort=${this.sort}&page={{#}}`;
+        let path: string = `/api/posts?sort=${this.sort}&page={{#}}`;
         if (this.tagId) {
             path = `/api/posts?sort=${this.sort}&tag=${this.tagId}&page={{#}}`;
         }
@@ -165,12 +170,12 @@ export class GridLayoutHandler {
     }
 
     private initViewToggleButtons(): void {
-        this.buttons.forEach((btn) => {
-            btn.addEventListener('click', () => {
+        this.buttons.forEach((btn): void => {
+            btn.addEventListener('click', (): void => {
                 this.buttons.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
 
-                const viewType = btn.dataset.view;
+                const viewType: string | undefined = btn.dataset.view;
                 if (viewType === 'waterfall') {
                     this.setWaterfallView();
                 } else {
@@ -196,8 +201,7 @@ export class GridLayoutHandler {
         this.container.classList.add('waterfall-view');
 
         if (!this.masonryInstance) {
-            console.log('Re-initializing Masonry for Waterfall view');
-            imagesLoaded(this.container, () => {
+            imagesLoaded(this.container, (): void => {
                 this.masonryInstance = new Masonry(this.container, {
                     itemSelector: '.grid-item',
                     columnWidth: '.grid-sizer',
