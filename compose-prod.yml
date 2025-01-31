@@ -10,9 +10,6 @@ services:
   nginx:
     image: nginx:alpine
     restart: always
-    ports:
-      - "80:80"
-      - "443:443"
     volumes:
       - /home/ubuntu/web/imgdock:/var/www/imgdock
       - ./services/prod/nginx/default.conf:/etc/nginx/conf.d/default.conf
@@ -23,3 +20,18 @@ services:
     image: memcached:alpine
     restart: always
     command: ["-m", "128", "-o", "modern"]
+
+  https-portal:
+    image: steveltn/https-portal:1
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAINS: "imgdock.com -> http://nginx"
+      STAGE: "production"
+    volumes:
+      - https-portal-data:/var/lib/https-portal
+
+volumes:
+  https-portal-data:
