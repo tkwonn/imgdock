@@ -24,7 +24,7 @@ RUN mkdir -p /var/log/php \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY ./services/prod/php/php.ini /usr/local/etc/php/php.ini
 
-WORKDIR /var/www/html
+WORKDIR /var/www/imgdock
 
 COPY composer.json ./
 RUN composer install --prefer-dist
@@ -35,6 +35,3 @@ COPY . .
 RUN npm run build
 
 COPY . .
-
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
