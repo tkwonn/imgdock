@@ -4,6 +4,4 @@ vendor/
 .php-cs-fixer.cache
 .env
 public/phpMemcachedAdmin/
-.package-lock.json
-.composer-lock.json
 node_modules/
