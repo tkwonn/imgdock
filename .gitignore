@@ -3,5 +3,7 @@
 vendor/
 .php-cs-fixer.cache
 .env
-docs/architecture.drawio.svg'
 public/phpMemcachedAdmin/
+.package-lock.json
+.composer-lock.json
+node_modules/

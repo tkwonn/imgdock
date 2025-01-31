@@ -2,9 +2,9 @@ services:
   php:
     build:
       context: .
-      dockerfile: services/php/Dockerfile
+      dockerfile: services/dev/php/Dockerfile
     volumes:
-      - .:/var/www/html
+      - .:/var/www/html # To reflect local changes to the container
       - php-logs:/var/log/php
     depends_on:
       - mysql
@@ -17,7 +17,7 @@ services:
       - "8080:80"
     volumes:
       - .:/var/www/html
-      - ./services/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./services/dev/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php
 

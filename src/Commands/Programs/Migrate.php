@@ -106,6 +106,10 @@ EXAMPLES;
          * Otherwise, begin with the first migration file (index 0).
          */
         $startIndex = ($lastMigration) ? array_search($lastMigration, $allMigrations) + 1 : 0;
+        if ($startIndex >= count($allMigrations)) {
+            $this->log('No new migrations to run.');
+            return;
+        }
 
         for ($i = $startIndex; $i < count($allMigrations); $i++) {
             $filename = $allMigrations[$i];
@@ -189,8 +193,7 @@ EXAMPLES;
     {
         $mysqli = new MySQLWrapper();
         foreach ($queries as $query) {
-            $result = $mysqli->query($query);
-            if ($result === false) {
+            if ($mysqli->query($query) === false) {
                 throw new Exception(sprintf('Query {%s} failed.', $query));
             } else {
                 $this->log('Ran query: ' . $query);
@@ -270,12 +273,12 @@ EXAMPLES;
     {
         $mysqli = new MySQLWrapper();
         $statement = $mysqli->prepare('DELETE FROM migrations WHERE filename = ?');
-
         if (!$statement) {
             throw new Exception('Prepare failed: (' . $mysqli->errno . ') ' . $mysqli->error);
         }
 
         $statement->bind_param('s', $filename);
+
         if (!$statement->execute()) {
             throw new Exception('Execute failed: (' . $statement->errno . ') ' . $statement->error);
         }

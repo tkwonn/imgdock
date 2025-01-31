@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.3-fpm
 
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get update && apt-get install -y \
@@ -22,7 +22,7 @@ RUN mkdir -p /var/log/php \
     && chmod 777 /var/log/php/error.log
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-COPY ./services/php/php.ini /usr/local/etc/php/php.ini
+COPY ./services/dev/php/php.ini /usr/local/etc/php/php.ini
 
 WORKDIR /var/www/html
 

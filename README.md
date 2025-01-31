@@ -1,6 +1,6 @@
 # imgdock
 
-[![GitHub last commit](https://img.shields.io/github/last-commit/tkwonn/text-snippet?color=chocolate)](https://github.com/tkwonn/image-hosting/commits/)
+[![GitHub last commit](https://img.shields.io/github/last-commit/tkwonn/imgdock?color=chocolate)](https://github.com/tkwonn/imgdock/commits/)
 
 ## What is this
 
@@ -137,21 +137,14 @@ This project uses Docker for local development, making it easy for anyone to run
 
 1. Clone this repository
 ```bash
-git clone https://github.com/tkwonn/image-hosting.git
-cd image-hosting
+git clone https://github.com/tkwonn/imgdock.git
+cd imgdock
 ```
 
 2. Setup the environment variables
 ```bash
 # Copy the example environment file
 cp .env.example .env
-
-# Example of .env file content
-DATABASE_HOST=mysql
-DATABASE_NAME=pastes
-DATABASE_USER=user
-DATABASE_USER_PASSWORD=password
-DATABASE_ROOT_PASSWORD=root_password
 ```
 
 3. Build and run the containers

@@ -10,24 +10,28 @@ use Psr\Http\Message\StreamInterface;
 class StorageHelper
 {
     private static ?S3Client $s3Client = null;
-
-    // TODO: store it in the .env file
-    private const BUCKET_NAME = 'images';
-
-    // TODO: prepare for dev and prod environments
+    private const RELEASE_STAGE_LOCAL = 'local';
     private static function getS3Client(): S3Client
     {
         if (!self::$s3Client) {
-            self::$s3Client = new S3Client([
+            $config = [
                 'version' => 'latest',
-                'region' => 'us-east-1',
-                'endpoint' => 'http://minio:9000',
-                'use_path_style_endpoint' => true,
-                'credentials' => [
-                    'key' => Settings::env('MINIO_ROOT_USER'),
-                    'secret' => Settings::env('MINIO_ROOT_PASSWORD'),
-                ],
-            ]);
+                'region' => Settings::env('AWS_REGION'),
+            ];
+
+            if (Settings::env('APP_ENV') === self::RELEASE_STAGE_LOCAL) {
+                $config = array_merge($config, [
+                    'endpoint' => Settings::env('MINIO_ENDPOINT'),
+                    'use_path_style_endpoint' => true,
+                    'credentials' => [
+                        'key'    => Settings::env('MINIO_ROOT_USER'),
+                        'secret' => Settings::env('MINIO_ROOT_PASSWORD'),
+                    ],
+                ]);
+            }
+
+            // No explicit credentials are needed for the production environment since the EC2 instance has an IAM role
+            self::$s3Client = new S3Client($config);
         }
 
         return self::$s3Client;
@@ -50,7 +54,7 @@ class StorageHelper
             }
 
             $s3Client->putObject([
-                'Bucket' => self::BUCKET_NAME,
+                'Bucket' => Settings::env('S3_BUCKET_NAME'),
                 'Key' => $s3Key,
                 'Body' => fopen($file['tmp_name'], 'rb'), // read binary
             ]);
@@ -70,7 +74,7 @@ class StorageHelper
             $s3Client = self::getS3Client();
 
             $result = $s3Client->getObject([
-                'Bucket' => self::BUCKET_NAME,
+                'Bucket' => Settings::env('S3_BUCKET_NAME'),
                 'Key' => $s3Key,
             ]);
 
@@ -89,7 +93,7 @@ class StorageHelper
             $s3Client = self::getS3Client();
 
             $s3Client->deleteObject([
-                'Bucket' => self::BUCKET_NAME,
+                'Bucket' => Settings::env('S3_BUCKET_NAME'),
                 'Key' => $s3Key,
             ]);
         } catch (S3Exception $e) {
