@@ -22,7 +22,7 @@ class ActionHandler {
     private initEventListeners(): void {
         const shareButton = document.querySelector('[data-action="share-x"]') as HTMLButtonElement;
         shareButton.addEventListener('click', (): void => {
-            const url = window.location.href;
+            const url: string = window.location.href;
             const params = new URLSearchParams(<ShareParams>{
                 text: this.postTitle,
                 url: url,

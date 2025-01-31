@@ -1,1 +1,1 @@
-import{G as n}from"./grid-CDH4TFXS.js";import"./_commonjsHelpers-Cpj98o6Y.js";document.addEventListener("DOMContentLoaded",()=>{const t=document.getElementById("tagContainer"),d=t==null?void 0:t.dataset.tagId,e=d||void 0;new n({tagId:e})});
+import{G as n}from"./grid-BQLpeedw.js";import"./_commonjsHelpers-Cpj98o6Y.js";document.addEventListener("DOMContentLoaded",()=>{const t=document.getElementById("tagContainer"),d=t==null?void 0:t.dataset.tagId,e=d||void 0;new n({tagId:e})});
