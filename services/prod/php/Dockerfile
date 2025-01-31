@@ -27,7 +27,7 @@ COPY ./services/prod/php/php.ini /usr/local/etc/php/php.ini
 WORKDIR /var/www/imgdock
 
 COPY composer.json ./
-RUN composer install --prefer-dist
+RUN composer install --no-dev --optimize-autoloader
 
 COPY package.json ./
 RUN npm install
