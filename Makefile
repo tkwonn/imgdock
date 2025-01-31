@@ -29,9 +29,9 @@ seed:
 	$(COMPOSE) exec php php $(CONSOLE) seed --class $(class)
 
 seed-all:
-	$(MAKE) db/seed class=TagsSeeder
-	$(MAKE) db/seed class=PostsSeeder
-	$(MAKE) db/seed class=PostTagSeeder
+	$(MAKE) seed class=TagsSeeder
+	$(MAKE) seed class=PostsSeeder
+	$(MAKE) seed class=PostTagSeeder
 
 db/reset:
 	@if [ -z "$(table)" ]; then \
