@@ -3,7 +3,7 @@ services:
     image: ${DOCKERHUB_USERNAME}/imgdock-prod:${IMAGE_TAG}
     restart: always
     volumes:
-      - /home/ubuntu/imgdock:/var/www/imgdock
+      - /home/ubuntu/web/imgdock:/var/www/imgdock
     depends_on:
       - memcached
 
@@ -14,7 +14,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - /home/ubuntu/imgdock:/var/www/imgdock
+      - /home/ubuntu/web/imgdock:/var/www/imgdock
       - ./services/prod/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php
