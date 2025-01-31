@@ -4,8 +4,6 @@
 .gitattributes
 
 # Environment files
-.env
-.env.*
 !.env.example
 
 # Docker related
