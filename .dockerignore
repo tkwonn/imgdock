@@ -12,9 +12,6 @@ compose*.yml
 .dockerignore
 Dockerfile*
 
-# Dependencies
-vendor/
-
 # IDE and editor files
 .idea/
 .vscode/
