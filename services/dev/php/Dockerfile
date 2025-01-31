@@ -26,10 +26,10 @@ COPY ./services/dev/php/php.ini /usr/local/etc/php/php.ini
 
 WORKDIR /var/www/html
 
-COPY composer.json ./
+COPY composer.json composer.lock ./
 RUN composer install --prefer-dist
 
-COPY package.json ./
+COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
 RUN npm run build
