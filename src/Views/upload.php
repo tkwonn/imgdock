@@ -6,6 +6,7 @@ $pageTitle = 'imgdock: Free Image Hosting Service';
 $logoTitle = 'imgdock';
 $isUploadPage = true;
 require __DIR__ . '/layout/header.php';
+use Helpers\Settings;
 ?>
 
 <main style="margin-top: 56px; flex: 1; display: flex;">
@@ -97,4 +98,4 @@ require __DIR__ . '/layout/header.php';
     </div>
 </div>
 
-<script type="module" src="/assets/js/upload.js"></script>
+<script type="module" src="<?= htmlspecialchars(Settings::env('VITE_BASE_URL')) ?>js/upload.js"></script>

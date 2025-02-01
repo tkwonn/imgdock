@@ -6,6 +6,7 @@ $pageTitle = $post['title'];
 $logoTitle = 'imgdock';
 $isUploadPage = false;
 require __DIR__ . '/layout/header.php';
+use Helpers\Settings;
 ?>
 
 <main class="post-layout">
@@ -76,4 +77,4 @@ require __DIR__ . '/layout/header.php';
     </div>
 </div>
 
-<script type="module" src="/assets/js/post.js"></script>
+<script type="module" src="<?= htmlspecialchars(Settings::env('VITE_BASE_URL')) ?>js/post.js"></script>

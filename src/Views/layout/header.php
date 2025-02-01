@@ -4,6 +4,7 @@
  * @var string $logoTitle
  * @var bool   $isUploadPage
  */
+use Helpers\Settings;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,9 +13,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($pageTitle); ?></title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link href="/assets/css/app.css" rel="stylesheet">
+    <link href="<?= htmlspecialchars(Settings::env('VITE_BASE_URL')) ?>css/app.css" rel="stylesheet">
     <?php if ($isUploadPage): ?>
-        <link href="/assets/css/upload.css" rel="stylesheet">
+        <link href="<?= htmlspecialchars(Settings::env('VITE_BASE_URL')) ?>css/upload.css" rel="stylesheet">
     <?php endif; ?>
 </head>
 <body style="min-height: 100vh; display: flex; flex-direction: column;">

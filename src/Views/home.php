@@ -7,6 +7,7 @@ $pageTitle = 'imgdock: Free Image Hosting Service';
 $logoTitle = 'imgdock';
 $isUploadPage = false;
 require __DIR__ . '/layout/header.php';
+use Helpers\Settings;
 ?>
 
 <main class="container-fluid px-5 py-4" style="margin-top: 56px; color: white;">
@@ -50,4 +51,4 @@ require __DIR__ . '/layout/header.php';
     </div>
 </main>
 
-<script type="module" src="/assets/js/home.js"></script>
+<script type="module" src="<?= htmlspecialchars(Settings::env('VITE_BASE_URL')) ?>js/home.js"></script>

@@ -7,6 +7,7 @@ $pageTitle = $tag['name'] . ' Images - imgdock';
 $logoTitle = 'imgdock';
 $isUploadPage = false;
 require __DIR__ . '/layout/header.php';
+use Helpers\Settings;
 ?>
 
 <main
@@ -41,4 +42,4 @@ require __DIR__ . '/layout/header.php';
     </div>
 </main>
 
-<script type="module" src="/assets/js/tag.js"></script>
+<script type="module" src="<?= htmlspecialchars(Settings::env('VITE_BASE_URL')) ?>js/tags.js"></script>
