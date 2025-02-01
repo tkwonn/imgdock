@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/../src/Exceptions/HttpException.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 use Exceptions\HttpException;
 
