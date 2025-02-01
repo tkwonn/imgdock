@@ -248,6 +248,7 @@ class ImageUploader {
     }
 
     private generateSuccessMessage(response: UploadResponse): string {
+        const host: string = window.location.host;
         return `
           <h5 class="mb-4">Your image has been successfully uploaded!</h5>
     
@@ -262,7 +263,7 @@ class ImageUploader {
           <div class="input-group mb-4" style="max-width: 400px; margin: 0 auto;">
             <input type="text"
                    class="form-control bg-dark text-light border-secondary text-center user-select-none"
-                   value="http://localhost:8080${response.body?.delete_url}"
+                   value="${host}${response.body?.delete_url}"
                    id="deleteUrl"
                    readonly
                    style="cursor: default;"
