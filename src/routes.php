@@ -28,7 +28,7 @@ return [
 
         return $controller->tagIndex($tagName);
     },
-    'posts/delete/([A-Za-z0-9_-]{32})' => function (string $deleteKey): HTTPRenderer {
+    'posts/delete/([A-Za-z0-9_-]{16})' => function (string $deleteKey): HTTPRenderer {
         if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
             throw new HttpException(405, 'It must be GET.');
         }
