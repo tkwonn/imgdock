@@ -84,6 +84,12 @@ class StorageHelper
         }
     }
 
+    public static function getCdnImageUrl(string $s3Key): string
+    {
+        $cloudfrontDomain = Settings::env('CLOUDFRONT_DOMAIN');
+        return "https://$cloudfrontDomain/$s3Key";
+    }
+
     /**
      * @throws Exception If the file delete fails
      */
