@@ -1,6 +1,7 @@
 .idea/
 .vscode/
 vendor/
+tmp/
 .php-cs-fixer.cache
 .env
 public/phpMemcachedAdmin/
