@@ -42,4 +42,4 @@ use Helpers\Settings;
     </div>
 </main>
 
-<script type="module" src="<?= htmlspecialchars(Settings::env('VITE_BASE_URL')) ?>js/tags.js"></script>
+<script type="module" src="<?= htmlspecialchars(Settings::env('VITE_BASE_URL')) ?>js/tag.js"></script>
