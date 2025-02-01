@@ -1,6 +1,6 @@
 # Indexing and Caching
 
-This application primarily manages posts (in the posts table) and tags (in the tags table).   
+This application primarily manages posts and tags.   
 Specific indexes and Memcached-based caching have been implemented to improve query performance and reduce database load.
 
 ## No Index on the `tags` table
