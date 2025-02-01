@@ -29,6 +29,8 @@ WORKDIR /var/www/imgdock
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader
 
+COPY vendor/ ./vendor/
+
 COPY package.json package-lock.json ./
 RUN npm install
 
