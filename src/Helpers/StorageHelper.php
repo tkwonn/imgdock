@@ -10,7 +10,9 @@ use Psr\Http\Message\StreamInterface;
 class StorageHelper
 {
     private static ?S3Client $s3Client = null;
+
     private const RELEASE_STAGE_LOCAL = 'local';
+
     private static function getS3Client(): S3Client
     {
         if (!self::$s3Client) {
@@ -24,7 +26,7 @@ class StorageHelper
                     'endpoint' => Settings::env('MINIO_ENDPOINT'),
                     'use_path_style_endpoint' => true,
                     'credentials' => [
-                        'key'    => Settings::env('MINIO_ROOT_USER'),
+                        'key' => Settings::env('MINIO_ROOT_USER'),
                         'secret' => Settings::env('MINIO_ROOT_PASSWORD'),
                     ],
                 ]);
@@ -87,6 +89,7 @@ class StorageHelper
     public static function getCdnImageUrl(string $s3Key): string
     {
         $cloudfrontDomain = Settings::env('CLOUDFRONT_DOMAIN');
+
         return "https://$cloudfrontDomain/$s3Key";
     }
 

@@ -108,6 +108,7 @@ EXAMPLES;
         $startIndex = ($lastMigration) ? array_search($lastMigration, $allMigrations) + 1 : 0;
         if ($startIndex >= count($allMigrations)) {
             $this->log('No new migrations to run.');
+
             return;
         }
 

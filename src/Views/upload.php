@@ -7,6 +7,7 @@ $logoTitle = 'imgdock';
 $isUploadPage = true;
 require __DIR__ . '/layout/header.php';
 use Helpers\Settings;
+
 ?>
 
 <main style="margin-top: 56px; flex: 1; display: flex;">

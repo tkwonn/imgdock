@@ -8,6 +8,7 @@ $logoTitle = 'imgdock';
 $isUploadPage = false;
 require __DIR__ . '/layout/header.php';
 use Helpers\Settings;
+
 ?>
 
 <main

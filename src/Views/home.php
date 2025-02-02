@@ -8,6 +8,7 @@ $logoTitle = 'imgdock';
 $isUploadPage = false;
 require __DIR__ . '/layout/header.php';
 use Helpers\Settings;
+
 ?>
 
 <main class="container-fluid px-5 py-4" style="margin-top: 56px; color: white;">

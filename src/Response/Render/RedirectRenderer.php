@@ -6,7 +6,6 @@ use Response\HTTPRenderer;
 
 class RedirectRenderer implements HTTPRenderer
 {
-
     private string $url;
     private int $statusCode;
 
@@ -15,7 +14,6 @@ class RedirectRenderer implements HTTPRenderer
         $this->url = $url;
         $this->statusCode = $statusCode;
     }
-
 
     public function getFields(): array
     {

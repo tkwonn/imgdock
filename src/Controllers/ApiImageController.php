@@ -12,6 +12,7 @@ use Response\Render\RedirectRenderer;
 class ApiImageController
 {
     private const RELEASE_STAGE_LOCAL = 'local';
+
     /**
      * GET api/images/tags/([A-Za-z0-9_-]+)\.(jpg|jpeg|png)
      * @throws Exception If the file download fails
@@ -21,10 +22,12 @@ class ApiImageController
         try {
             if (Settings::env('APP_ENV') === self::RELEASE_STAGE_LOCAL) {
                 $stream = StorageHelper::getObject("$uniqueString.$extension");
+
                 return new ImageRenderer($stream, $extension);
             }
 
             $imageUrl = StorageHelper::getCdnImageUrl("$uniqueString.$extension");
+
             return new RedirectRenderer($imageUrl);
         } catch (Exception $e) {
             throw new Exception('Failed to download file: ' . $e->getMessage());
@@ -40,10 +43,12 @@ class ApiImageController
         try {
             if (Settings::env('APP_ENV') === self::RELEASE_STAGE_LOCAL) {
                 $stream = StorageHelper::getObject("$year/$month/$uniqueString.$extension");
+
                 return new ImageRenderer($stream, $extension);
             }
 
             $imageUrl = StorageHelper::getCdnImageUrl("$year/$month/$uniqueString.$extension");
+
             return new RedirectRenderer($imageUrl);
         } catch (Exception $e) {
             throw new Exception('Failed to download file: ' . $e->getMessage());

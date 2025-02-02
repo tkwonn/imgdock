@@ -5,6 +5,7 @@
  * @var bool   $isUploadPage
  */
 use Helpers\Settings;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
