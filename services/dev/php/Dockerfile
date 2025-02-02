@@ -24,14 +24,14 @@ RUN mkdir -p /var/log/php \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY ./services/dev/php/php.ini /usr/local/etc/php/php.ini
 
-WORKDIR /var/www/html
+WORKDIR /var/www/imgdock
 
 COPY composer.json composer.lock ./
 RUN composer install --prefer-dist
 
 COPY package.json package-lock.json ./
 RUN npm install
-COPY . .
-RUN npm run build
 
 COPY . .
+
+RUN npm run build

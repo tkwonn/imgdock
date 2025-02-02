@@ -1,10 +1,10 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
+require '/var/www/imgdock/vendor/autoload.php';
 
 use Exceptions\HttpException;
 
-$routes = include '../src/routes.php';
+$routes = include '/var/www/imgdock/src/routes.php';
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $path = ltrim($path, '/');
 
