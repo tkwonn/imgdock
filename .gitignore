@@ -6,4 +6,3 @@ tmp/
 .env
 public/phpMemcachedAdmin/
 node_modules/
-docs/imgdock.drawio.svg
