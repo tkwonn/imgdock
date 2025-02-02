@@ -15,10 +15,9 @@ if [ -d "$APP_DIR" ]; then
   sudo docker system prune -af
 
   echo "[INFO] Removing unused volumes except 'https-portal'"
-  for vol in $(sudo docker volume ls -q); do
-    if [[ "$vol" != *"https-portal"* ]]; then
-      sudo docker volume rm "$vol" || true
-    fi
+  volumes_to_delete=$(docker volume ls -q | grep -v 'imgdock_https-portal-data')
+  for volume in $volumes_to_delete; do
+    sudo docker volume rm "$volume"
   done
 
   echo "[INFO] Deleting old code directory..."
