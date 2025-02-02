@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: services/dev/php/Dockerfile
     volumes:
-      - .:/var/www/imgdock # To reflect local changes to the container
+      - .:/var/www/imgdock
       - php-logs:/var/log/php
     depends_on:
       - mysql
