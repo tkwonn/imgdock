@@ -152,7 +152,7 @@ jobs:
           chmod +x /home/ubuntu/web/imgdock/src/bin/cleanup.sh
           /home/ubuntu/web/imgdock/src/bin/cleanup.sh
 
-          # 2) New repository clone
+          # 2) Clone New repository
           cd /home/ubuntu/web
           git clone --branch $GITHUB_BRANCH
           
