@@ -26,12 +26,12 @@ COPY ./services/prod/php/php.ini /usr/local/etc/php/php.ini
 
 WORKDIR /var/www/imgdock
 
-COPY composer.json composer.lock ./
+COPY --chown=www-data:www-data composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader
 
 COPY package.json package-lock.json ./
 RUN npm install
 
-COPY . .
+COPY --chown=www-data:www-data . .
 
 RUN npm run build
