@@ -32,28 +32,46 @@ URL: [imgdock.com](https://imgdock.com)
 
 ## Demo
 
-- Upload (tag)
-- View (with link, sort selection, waterfall view)
-- Delete
+### Upload
+Users can upload an image, optionally add tags, and submit.    
+A **deletion URL** is generated on the fly (one-time only) so that the user can delete their upload later.
 
+https://github.com/user-attachments/assets/b0ed9144-120e-4b02-9fe1-ff6c94e961b8
+
+### View
+This app supports two viewing modes: a **Grid mode** (uniform thumbnails) and a **Waterfall/Masonry mode** (like Pinterest).    
+You can also toggle sorting between **Newest** and **Popular** (view count) order.
+
+https://github.com/user-attachments/assets/9a2dd295-0f58-4829-ae22-7b6c85ce3b1c
+
+### Delete
+When you open the **delete URL** (provided at upload time), the post is removed permanently.
+
+https://github.com/user-attachments/assets/e0114f3e-e569-4f23-95e2-39ef1ddf8e0a
 
 <br>
 
 ## Built with
 
-| **Category**  | **Technology**                                                                                    |
-|---------------|---------------------------------------------------------------------------------------------------|
-| VM            | Amazon EC2                                                                                        |
-| Web server    | Nginx                                                                                             |
-| Frontend      | HTML/CSS, TypeScript, Bootstrap CSS, Vite (Build tool)                                            |
-| Backend       | PHP 8.3                                                                                           |
-| Database      | Amazon RDS (MySQL 8.0)                                                                            |
-| In-memory DB  | [memcached](https://github.com/tkwonn/imgdock/blob/main/docs/index-cache.md)                      |
-| Storage       | Amazon S3, MinIO (for local development)                                                          |
-| Middleware    | [Custom-built migration tool](https://github.com/tkwonn/imgdock/blob/main/docs/migration-tool.md) |
-| CI/CD         | GitHub Actions                                                                                    |
-| Container     | Docker (Docker Compose)                                                                           |
-| CDN           | Amazon CloudFront                                                                                 |
+| **Category**  | **Technology**                                                                                             |
+|---------------|------------------------------------------------------------------------------------------------------------|
+| VM            | Amazon EC2                                                                                                 |
+| Web server    | Nginx                                                                                                      |
+| Frontend      | HTML/CSS, TypeScript, Bootstrap CSS, Vite                                                     |
+| Backend       | PHP 8.3                                                                                                    |
+| Database      | Amazon RDS (MySQL 8.0)                                                                                     |
+| In-memory DB  | [memcached](https://github.com/tkwonn/imgdock/blob/main/docs/index-cache.md)                               |
+| Storage       | Amazon S3, MinIO (for local development)                                                                   |
+| Middleware    | [Custom-built migration tool](https://github.com/tkwonn/imgdock/blob/main/docs/migration-tool.md)          |
+| CI/CD         | GitHub Actions                                                                                             |
+| Container     | Docker, Docker Compose, [Docker Hub](https://hub.docker.com/repository/docker/tkwonn/imgdock-prod/general) |
+| CDN           | Amazon CloudFront (JavaScript, CSS, and images)                                                                                          |
+
+<br>
+
+## Cloud Architecture Diagram
+
+![Cloud Architecture](docs/cloud-architecture.svg)
 
 <br>
 
@@ -64,6 +82,8 @@ URL: [imgdock.com](https://imgdock.com)
 - `posts`: Stores metadata for uploaded files (actual files are stored in S3)
 - `tags`: Table for managing tags and their descriptions
 - `post_tags`: Junction table implementing many-to-many relationship between posts and tags
+
+<br>
 
 ## Storage Structure
 
@@ -93,30 +113,31 @@ Unique String Generation:
 
 <br>
 
-## Cloud Architecture Diagram
-
-
-<br>
-
 ## Security Measures
 
 ### File Size and Upload Limits
 
 To ensure efficient resource usage and prevent abuse, the application enforces specific file size and upload limits.
 
-1. Frontend Restrictions (Uppy Library)
+Frontend Restrictions (Uppy Library)
 - The maximum file size for non-animated images (e.g., `jpg`, `jpeg`, `png`) is 10MB. 
 - For animated images (e.g., `gif`), the limit is 20MB.
 
-2. Backend Restrictions (PHP)
+<br>
+
+Backend Restrictions (PHP)
 - `upload_max_filesize`: 20 MB (maximum size of a single uploaded file).
 - `post_max_size`: 20 MB (maximum size of the entire POST request).
 - `memory_limit`: 256 MB (maximum memory allocated to PHP scripts).
 - `max_execution_time`: 300 seconds (maximum time a script can run).
 
-3. Web Server Rate Limiting (Nginx)
+<br>
+
+Web Server Rate Limiting (Nginx)
 - File upload requests are rate-limited to 1 request per second with a burst of 5 requests. 
 - This prevents abuse and ensures fair usage of the service.
+
+<br>
 
 ### Input Sanitization and Character Escaping
 
