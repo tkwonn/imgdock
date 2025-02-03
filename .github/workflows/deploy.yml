@@ -150,10 +150,10 @@ jobs:
       MEMCACHED_PORT: ${{ secrets.MEMCACHED_PORT }}
 
     steps:
-      - name: Checkout
+      - name: Checkout for logs/scripts
         uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ env.ROLE_ARN }}
@@ -166,17 +166,20 @@ jobs:
           cat << 'SHOWJSON' > debug.json
           {
             "commands": [
-              "cat << 'EOCMD' > /tmp/deploy_commands.sh",
+              "sudo sh -c \"cat << 'EOCMD' > /tmp/deploy_commands.sh\"",
               "#!/usr/bin/env bash",
               "set -e",
-              "",
-              "chmod +x /home/ubuntu/web/imgdock/src/bin/cleanup.sh",
-              "/home/ubuntu/web/imgdock/src/bin/cleanup.sh",
-              "",
+
+              "# 1) Cleanup docker and repository",
+              "sudo chmod +x /home/ubuntu/web/imgdock/src/bin/cleanup.sh",
+              "sudo /home/ubuntu/web/imgdock/src/bin/cleanup.sh",
+
+              "# 2) Clone New repository",
               "cd /home/ubuntu/web",
-              "git clone --branch $GITHUB_BRANCH https://github.com/tkwonn/imgdock.git imgdock",
-              "",
-              "chmod +x /home/ubuntu/web/imgdock/src/bin/setup_env.sh",
+              "sudo git clone --branch $GITHUB_BRANCH https://github.com/tkwonn/imgdock.git imgdock",
+
+              "# 3) .env setup",
+              "sudo chmod +x /home/ubuntu/web/imgdock/src/bin/setup_env.sh",
               "export APP_ENV=\\\"${APP_ENV}\\\"",
               "export CLOUDFRONT_DOMAIN=\\\"${CLOUDFRONT_DOMAIN}\\\"",
               "export VITE_BASE_URL=\\\"${VITE_BASE_URL}\\\"",
@@ -187,14 +190,14 @@ jobs:
               "export DATABASE_USER_PASSWORD=\\\"${DATABASE_USER_PASSWORD}\\\"",
               "export MEMCACHED_HOST=\\\"${MEMCACHED_HOST}\\\"",
               "export MEMCACHED_PORT=\\\"${MEMCACHED_PORT}\\\"",
-              "/home/ubuntu/web/imgdock/src/bin/setup_env.sh",
-              "",
+              "sudo /home/ubuntu/web/imgdock/src/bin/setup_env.sh",
+
+              "# 4) Pull image from Docker Hub and run containers (sudo)",
               "cd /home/ubuntu/web/imgdock",
               "sudo docker compose -f compose-prod.yml up -d --pull always",
               "EOCMD",
-              "chmod +x /tmp/deploy_commands.sh",
-              "sudo chown ubuntu:ubuntu /tmp/deploy_commands.sh",
-              "sudo -u ubuntu bash -c '/tmp/deploy_commands.sh'"
+              "sudo chmod +x /tmp/deploy_commands.sh",
+              "sudo /tmp/deploy_commands.sh"
             ]
           }
           SHOWJSON
@@ -205,7 +208,6 @@ jobs:
 
           COMMANDS_JSON=$(cat debug.json)
 
-          #----------- send-command -----------
           COMMAND_ID=$(aws ssm send-command \
             --instance-ids "${EC2_INSTANCE_ID}" \
             --document-name "AWS-RunShellScript" \
@@ -218,7 +220,6 @@ jobs:
 
           echo "SSM Command ID: $COMMAND_ID"
 
-          # wait
           aws ssm wait command-executed \
             --command-id "$COMMAND_ID" \
             --instance-id "${EC2_INSTANCE_ID}" \
@@ -233,7 +234,6 @@ jobs:
               exit 1
             }
 
-          # get output
           OUTPUT=$(aws ssm get-command-invocation \
             --instance-id "${EC2_INSTANCE_ID}" \
             --command-id "$COMMAND_ID" \
