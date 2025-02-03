@@ -147,6 +147,7 @@ jobs:
       CLOUDFRONT_DOMAIN: ${{ secrets.CLOUDFRONT_DOMAIN }}
       VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
       S3_BUCKET_NAME: imgdock-prod-storage
+      S3_BACKUP_BUCKET_NAME: imgdock-prod-backups
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
       DATABASE_NAME: imgdock
       DATABASE_USER: ${{ secrets.DATABASE_USER }}
@@ -201,6 +202,7 @@ jobs:
               "echo CLOUDFRONT_DOMAIN=\\\"${{ env.CLOUDFRONT_DOMAIN }}\\\" >> .env",
               "echo VITE_BASE_URL=\\\"${{ env.VITE_BASE_URL }}\\\" >> .env",
               "echo S3_BUCKET_NAME=\\\"${{ env.S3_BUCKET_NAME }}\\\" >> .env",
+              "echo S3_BACKUP_BUCKET_NAME=\\\"${{ env.S3_BACKUP_BUCKET_NAME }}\\\" >> .env",
               "echo DATABASE_HOST=\\\"${{ env.DATABASE_HOST }}\\\" >> .env",
               "echo DATABASE_NAME=\\\"${{ env.DATABASE_NAME }}\\\" >> .env",
               "echo DATABASE_USER=\\\"${{ env.DATABASE_USER }}\\\" >> .env",
