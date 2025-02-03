@@ -18,16 +18,18 @@ URL: [imgdock.com](https://imgdock.com)
 <br>
 
 ## Table of Contents
-q
 1. [Demo](#demo)
 2. [Built with](#built-with)
-3. [ER Diagram](#er-diagram)
-4. [Cloud Architecture Diagram](#cloud-architecture-diagram)
-5. [Security Measures](#security-measures)
-6. [CI/CD](#cicd)
-    1. [Continuous Integration](#continuous-integration)
-    2. [Continuous Deployment](#continuous-deployment)
-7. [How to use](#how-to-use)
+3. [Cloud Architecture Diagram](#cloud-architecture-diagram)
+4. [ER Diagram](#er-diagram)
+5. [Storage Structure](#storage-structure)
+6. [Security Measures](#security-measures)
+    1. [File Size and Upload Limits](#file-size-and-upload-limits)
+    2. [Input Sanitization and Character Escaping](#input-sanitization-and-character-escaping)
+7. [CI/CD](#cicd)
+    1. [Build and Lint Stage](#build-and-lint-stage)
+    2. [Docker Build and Push Stage](#docker-build-and-push-stage)
+    3. [AWS Deployment Stage](#aws-deployment-stage)
 
 <br>
 
@@ -150,15 +152,49 @@ Web Server Rate Limiting (Nginx)
 
 ## CI/CD
 
-The project uses GitHub Actions to automate testing and deployment workflows with the following configurations:
+This project implements a CI/CD pipeline using GitHub Actions for automated testing, building, and deployment to AWS infrastructure.
 
-### Continuous Integration
+The pipeline consists of three main stages:
+1. Build and Lint
+2. Docker Image Building and Publishing
+3. AWS Deployment
 
-- Dependency caching using Composer to speed up builds
+### Build and Lint Stage
+
+- Dependency caching using NPM and Composer to speed up builds
 - Code quality checks using PHP CS Fixer
 
-### Continuous Deployment
+<br>
+
+### Docker Build and Push Stage
+
+- Builds two Docker images:
+    1. PHP application image (`imgdock-prod:php-{sha}`)
+    2. Nginx server image (`imgdock-prod:php-{sha}`)
+- Implements Docker layer caching using GitHub Actions cache
+- Pushes images to Docker Hub with both latest and commit-specific tags
+
+<br>
+
+### AWS Deployment Stage
+
+#### Security
 
 - Secure AWS Authentication using OpenID Connect (short-lived tokens)
 - Minimal IAM permissions to ensure secure cloud role operations
 - AWS Systems Manager (SSM) for secure remote command execution (no direct SSH access or security group changes)
+
+#### Asset Deployment
+
+- Syncs built assets (JS and CSS files) to S3 bucket
+- Invalidates CloudFront cache for updated assets
+
+#### Application Deployment
+
+- Old repository and containers are removed before new deployment (Cleanup script: `/src/bin/cleanup.sh`)
+- Sets up environment variables
+- Pulls latest Docker images
+
+<br>
+
+![Workflow Diagram](docs/workflow.svg)
