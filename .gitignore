@@ -6,3 +6,4 @@ tmp/
 .env
 public/phpMemcachedAdmin/
 node_modules/
+delete_old_action_caches.sh
