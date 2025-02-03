@@ -78,7 +78,7 @@ jobs:
       - name: Run PHP CS Fixer 👀
         run: vendor/bin/php-cs-fixer fix -v --diff --dry-run
 
-  build-and-push-docker-image:
+  build-and-push-docker-images:
     needs: lint
     runs-on: ubuntu-22.04
 
@@ -125,7 +125,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy:
-    needs: build-and-push-docker-image
+    needs: build-and-push-docker-images
     runs-on: ubuntu-22.04
 
     permissions:
@@ -197,7 +197,7 @@ jobs:
           
           # Send SSM Command
           COMMAND_ID=$(aws ssm send-command \
-            --instance-ids "${{ env.EC2_INSTANCE_ID }}" \
+            --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \
             --document-name "AWS-RunShellScript" \
             --comment "Deploy application" \
             --parameters "$COMMANDS_JSON" \
@@ -211,11 +211,11 @@ jobs:
           # Wait for the command to finish
           aws ssm wait command-executed \
             --command-id "$COMMAND_ID" \
-            --instance-id "${{ env.EC2_INSTANCE_ID }}" \
+            --instance-id "${{ secrets.EC2_INSTANCE_ID }}" \
             --region "${{ env.AWS_REGION }}" || {
               echo "SSM command failed or timed out."
               aws ssm get-command-invocation \
-                --instance-id "${{ env.EC2_INSTANCE_ID }}" \
+                --instance-id "${{ secrets.EC2_INSTANCE_ID }}" \
                 --command-id "$COMMAND_ID" \
                 --region "${{ env.AWS_REGION }}" \
                 --query "StandardErrorContent" \
@@ -225,7 +225,7 @@ jobs:
 
           # Get the command output
           OUTPUT=$(aws ssm get-command-invocation \
-            --instance-id "${{ env.EC2_INSTANCE_ID }}" \
+            --instance-id "${{ secrets.EC2_INSTANCE_ID }}" \
             --command-id "$COMMAND_ID" \
             --region "${{ env.AWS_REGION }}" \
             --query "StandardOutputContent" \
