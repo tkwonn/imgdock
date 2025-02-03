@@ -125,6 +125,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy:
+    needs: build-and-push-docker-images
     runs-on: ubuntu-22.04
 
     permissions:
