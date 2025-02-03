@@ -4,13 +4,6 @@ set -e
 APP_DIR="/home/ubuntu/web/imgdock"
 
 cd "$APP_DIR"
-echo "[INFO] Attempting to stop running containers..."
-CONTAINERS=$(sudo docker ps -q | tr -d '\n' | tr -d ' ')
-if [ -n "$CONTAINERS" ]; then
-  sudo docker stop $CONTAINERS
-else
-  echo "[INFO] No running containers."
-fi
 
 echo "[INFO] docker-compose down..."
 sudo docker-compose -f compose-prod.yml down || true
