@@ -193,7 +193,7 @@ jobs:
           cat ssm.json
           echo "========================"
 
-          COMMANDS_JSON=$(cat debug.json)
+          COMMANDS_JSON=$(cat ssm.json)
 
           COMMAND_ID=$(aws ssm send-command \
             --instance-ids "${{ env.EC2_INSTANCE_ID }}" \
