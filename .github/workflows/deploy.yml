@@ -195,7 +195,6 @@ jobs:
               "cd /home/ubuntu/web/imgdock",
               "sudo docker compose -f compose-prod.yml up -d --pull always",
               "EOCMD",
-              # -------------- cat << 'EOCMD' Done --------------
               "chmod +x /tmp/deploy_commands.sh",
               "sudo chown ubuntu:ubuntu /tmp/deploy_commands.sh",
               "sudo -u ubuntu bash -c '/tmp/deploy_commands.sh'"
