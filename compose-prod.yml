@@ -9,6 +9,8 @@ services:
     restart: always
     depends_on:
       - memcached
+    env_file:
+      - .env
 
   nginx:
     image: tkwonn/imgdock-prod:nginx-latest
