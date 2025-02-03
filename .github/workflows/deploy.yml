@@ -169,16 +169,12 @@ jobs:
               "sudo sh -c \"cat << 'EOCMD' > /home/ubuntu/web/deploy_commands.sh\"",
               "#!/usr/bin/env bash",
               "set -e",
-
-              "# 1) Cleanup docker and repository",
-              "sudo chmod +x /home/ubuntu/web/imgdock/src/bin/cleanup.sh",
-              "sudo /home/ubuntu/web/imgdock/src/bin/cleanup.sh",
-
-              "# 2) Clone New repository",
+              "if [ -d /home/ubuntu/web/imgdock ]; then",
+                "sudo chmod +x /home/ubuntu/web/imgdock/src/bin/cleanup.sh",
+                "sudo /home/ubuntu/web/imgdock/src/bin/cleanup.sh"
+              "fi",
               "cd /home/ubuntu/web",
               "sudo git clone --branch $GITHUB_BRANCH git@github.com:tkwonn/imgdock.git",
-
-              "# 3) .env setup",
               "sudo chmod +x /home/ubuntu/web/imgdock/src/bin/setup_env.sh",
               "export APP_ENV=\\\"${APP_ENV}\\\"",
               "export CLOUDFRONT_DOMAIN=\\\"${CLOUDFRONT_DOMAIN}\\\"",
@@ -191,7 +187,7 @@ jobs:
               "export MEMCACHED_HOST=\\\"${MEMCACHED_HOST}\\\"",
               "export MEMCACHED_PORT=\\\"${MEMCACHED_PORT}\\\"",
               "sudo /home/ubuntu/web/imgdock/src/bin/setup_env.sh",
-
+  
               "# 4) Pull image from Docker Hub and run containers (sudo)",
               "cd /home/ubuntu/web/imgdock",
               "sudo docker compose -f compose-prod.yml up -d --pull always",
