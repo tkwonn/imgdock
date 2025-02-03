@@ -136,7 +136,18 @@ jobs:
       AWS_REGION: us-west-2
       ROLE_ARN: arn:aws:iam::${{ secrets.AWS_ID }}:role/${{ secrets.ROLE_NAME }}
       SESSION_NAME: deploy-${{ github.run_id }}-${{ github.run_attempt }}
+      EC2_INSTANCE_ID: ${{ secrets.EC2_INSTANCE_ID }}
       GITHUB_BRANCH: "${{ github.ref_name }}"
+      APP_ENV: prod
+      CLOUDFRONT_DOMAIN: ${{ secrets.CLOUDFRONT_DOMAIN }}
+      VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
+      S3_BUCKET_NAME: imgdock-prod-storage
+      DATABASE_HOST: ${{ secrets.DB_HOST }}
+      DATABASE_NAME: imgdock
+      DATABASE_USER: ${{ secrets.DB_USER }}
+      DATABASE_USER_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      MEMCACHED_HOST: ${{ secrets.MEMCACHED_HOST }}
+      MEMCACHED_PORT: ${{ secrets.MEMCACHED_PORT }}
 
     steps:
       - name: Checkout for deploy script
@@ -151,48 +162,46 @@ jobs:
 
       - name: Deploy Application 🚀
         run: |
-          cat << EOF > deploy_commands.sh
-          #!/usr/bin/env bash
-          set -e
-
-          # 1) Cleanup docker and repository
-          chmod +x /home/ubuntu/web/imgdock/src/bin/cleanup.sh
-          /home/ubuntu/web/imgdock/src/bin/cleanup.sh
-
-          # 2) Clone New repository
-          cd /home/ubuntu/web
-          git clone --branch $GITHUB_BRANCH
-          
-          # 3) .env setup
-          chmod +x /home/ubuntu/web/imgdock/src/bin/setup_env.sh
-          export APP_ENV=prod
-          export CLOUDFRONT_DOMAIN="${{ secrets.CLOUDFRONT_DOMAIN }}"
-          export VITE_BASE_URL="${{ secrets.VITE_BASE_URL }}"
-          export S3_BUCKET_NAME="imgdock-prod-storage"
-          export DATABASE_HOST="${{ secrets.DATABASE_HOST }}"
-          export DATABASE_NAME="imgdock"
-          export DATABASE_USER="${{ secrets.DATABASE_USER }}"
-          export DATABASE_USER_PASSWORD="${{ secrets.DATABASE_USER_PASSWORD }}"
-          export MEMCACHED_HOST="${{ secrets.MEMCACHED_HOST }}"
-          export MEMCACHED_PORT="${{ secrets.MEMCACHED_PORT }}"
-          
-          /home/ubuntu/web/imgdock/src/bin/setup_env.sh
-          
-          # 4) Pull image from Docker Hub and run containers
-          cd /home/ubuntu/web/imgdock
-          sudo docker compose -f compose-prod.yml up -d --pull always
-          EOF
-          
-          chmod +x deploy_commands.sh
-          
-          COMMANDS_JSON=$(cat << EOCMD
+          COMMANDS_JSON=$(cat << EOF
           {
-              "commands": [
-                "sudo chown ubuntu:ubuntu ./deploy_commands.sh",
-                "sudo -u ubuntu bash -c './deploy_commands.sh'"
-              ]
+            "commands": [
+              "cat << 'EOCMD' > /tmp/deploy_commands.sh",
+              "#!/usr/bin/env bash",
+              "set -e",
+              "",
+              "# 1) Cleanup docker and repository",
+              "chmod +x /home/ubuntu/web/imgdock/src/bin/cleanup.sh",
+              "/home/ubuntu/web/imgdock/src/bin/cleanup.sh",
+              "",
+              "# 2) Clone New repository",
+              "cd /home/ubuntu/web",
+              "git clone --branch $GITHUB_BRANCH https://github.com/tkwonn/imgdock.git imgdock",
+              "",
+              "# 3) .env setup",
+              "chmod +x /home/ubuntu/web/imgdock/src/bin/setup_env.sh",
+              "export APP_ENV=\\\"${APP_ENV}\\\"",
+              "export CLOUDFRONT_DOMAIN=\\\"${CLOUDFRONT_DOMAIN}\\\"",
+              "export VITE_BASE_URL=\\\"${VITE_BASE_URL}\\\"",
+              "export S3_BUCKET_NAME=\\\"${S3_BUCKET_NAME}\\\"",
+              "export DATABASE_HOST=\\\"${DATABASE_HOST}\\\"",
+              "export DATABASE_NAME=\\\"${DATABASE_NAME}\\\"",
+              "export DATABASE_USER=\\\"${DATABASE_USER}\\\"",
+              "export DATABASE_USER_PASSWORD=\\\"${DATABASE_USER_PASSWORD}\\\"",
+              "export MEMCACHED_HOST=\\\"${MEMCACHED_HOST}\\\"",
+              "export MEMCACHED_PORT=\\\"${MEMCACHED_PORT}\\\"",
+              "/home/ubuntu/web/imgdock/src/bin/setup_env.sh",
+              "",
+              "# 4) Pull image from Docker Hub and run containers",
+              "cd /home/ubuntu/web/imgdock",
+              "sudo docker compose -f compose-prod.yml up -d --pull always",
+              "EOCMD",
+              # -------------- cat << 'EOCMD' Done --------------
+              "chmod +x /tmp/deploy_commands.sh",
+              "sudo chown ubuntu:ubuntu /tmp/deploy_commands.sh",
+              "sudo -u ubuntu bash -c '/tmp/deploy_commands.sh'"
+            ]
           }
-          EOCMD
+          EOF
           )
           
           # Send SSM Command
