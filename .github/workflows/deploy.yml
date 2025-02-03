@@ -137,7 +137,6 @@ jobs:
       ROLE_ARN: arn:aws:iam::${{ secrets.AWS_ID }}:role/${{ secrets.ROLE_NAME }}
       SESSION_NAME: deploy-${{ github.run_id }}-${{ github.run_attempt }}
       EC2_INSTANCE_ID: ${{ secrets.EC2_INSTANCE_ID }}
-      GITHUB_BRANCH: "${{ github.ref_name }}"
       APP_ENV: prod
       CLOUDFRONT_DOMAIN: ${{ secrets.CLOUDFRONT_DOMAIN }}
       VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
@@ -163,11 +162,9 @@ jobs:
       - name: Deploy via SSM
         shell: bash
         run: |
-          cat << 'SHOWJSON' > debug.json
+          cat << 'EOF' > ssm.json
           {
             "commands": [
-              "sudo sh -c \"cat << 'EOCMD' > /home/ubuntu/web/deploy_commands.sh\"",
-              "#!/usr/bin/env bash",
               "set -e",
               "if [ -d /home/ubuntu/web/imgdock ]; then",
               "  sudo chmod +x /home/ubuntu/web/imgdock/src/bin/cleanup.sh",
@@ -188,15 +185,12 @@ jobs:
               "echo MEMCACHED_HOST=\\\"${{ env.MEMCACHED_HOST }}\\\" >> .env",
               "echo MEMCACHED_PORT=\\\"${{ env.MEMCACHED_PORT }}\\\" >> .env",
               "sudo docker-compose -f compose-prod.yml up -d --pull always",
-              "EOCMD",
-              "sudo chmod +x /home/ubuntu/web/deploy_commands.sh",
-              "sudo /home/ubuntu/web/deploy_commands.sh"
             ]
           }
-          SHOWJSON
+          EOF
 
-          echo "=== debug.json (raw) ==="
-          cat debug.json
+          echo "======= ssm.json ======="
+          cat ssm.json
           echo "========================"
 
           COMMANDS_JSON=$(cat debug.json)
