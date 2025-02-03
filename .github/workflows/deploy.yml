@@ -187,13 +187,11 @@ jobs:
               "export MEMCACHED_HOST=\\\"${MEMCACHED_HOST}\\\"",
               "export MEMCACHED_PORT=\\\"${MEMCACHED_PORT}\\\"",
               "sudo /home/ubuntu/web/imgdock/src/bin/setup_env.sh",
-  
-              "# 4) Pull image from Docker Hub and run containers (sudo)",
               "cd /home/ubuntu/web/imgdock",
               "sudo docker compose -f compose-prod.yml up -d --pull always",
               "EOCMD",
-              "sudo chmod +x /tmp/deploy_commands.sh",
-              "sudo /tmp/deploy_commands.sh"
+              "sudo chmod +x /home/ubuntu/web/deploy_commands.sh",
+              "sudo /home/ubuntu/web/deploy_commands.sh"
             ]
           }
           SHOWJSON
