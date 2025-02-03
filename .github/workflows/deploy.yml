@@ -106,7 +106,9 @@ jobs:
           context: .
           file: ./services/prod/php/Dockerfile
           push: true
-          tags: ${{ env.DOCKERHUB_USERNAME }}/imgdock-prod:php-${{ github.sha }}
+          tags: |
+            ${{ env.DOCKERHUB_USERNAME }}/imgdock-prod:php-${{ github.sha }}
+            ${{ env.DOCKERHUB_USERNAME }}/imgdock-prod:php-latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -116,7 +118,9 @@ jobs:
           context: .
           file: ./services/prod/nginx/Dockerfile
           push: true
-          tags: ${{ env.DOCKERHUB_USERNAME }}/imgdock-prod:nginx-${{ github.sha }}
+          tags: |
+            ${{ env.DOCKERHUB_USERNAME }}/imgdock-prod:nginx-${{ github.sha }}
+            ${{ env.DOCKERHUB_USERNAME }}/imgdock-prod:nginx-latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
