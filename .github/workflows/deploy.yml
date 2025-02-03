@@ -142,10 +142,10 @@ jobs:
       CLOUDFRONT_DOMAIN: ${{ secrets.CLOUDFRONT_DOMAIN }}
       VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
       S3_BUCKET_NAME: imgdock-prod-storage
-      DATABASE_HOST: ${{ secrets.DB_HOST }}
+      DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
       DATABASE_NAME: imgdock
-      DATABASE_USER: ${{ secrets.DB_USER }}
-      DATABASE_USER_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DATABASE_USER: ${{ secrets.DATABASE_USER }}
+      DATABASE_USER_PASSWORD: ${{ secrets.DATABASE_USER_PASSWORD }}
       MEMCACHED_HOST: ${{ secrets.MEMCACHED_HOST }}
       MEMCACHED_PORT: ${{ secrets.MEMCACHED_PORT }}
 
