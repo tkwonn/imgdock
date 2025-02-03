@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 jobs:
-  lint:
+  build-and-lint:
     runs-on: ubuntu-22.04
 
     env:
@@ -48,6 +48,15 @@ jobs:
       - name: Install dependencies ⏳
         run: npm ci
 
+      - name: Build static assets (Vite)
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-assets
+          path: public/assets
+
       - name: Use PHP 8.3 🛎
         uses: shivammathur/setup-php@v2
         with:
@@ -76,7 +85,7 @@ jobs:
         run: vendor/bin/php-cs-fixer fix -v --diff --dry-run
 
   build-and-push-docker-images:
-    needs: lint
+    needs: build-and-lint
     runs-on: ubuntu-22.04
 
     env:
@@ -156,8 +165,11 @@ jobs:
           role-session-name: ${{ env.SESSION_NAME }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Build static assets ⏳
-        run: npm run build
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-assets
+          path: public/assets
 
       - name: Sync assets to S3 📂
         run:  |
