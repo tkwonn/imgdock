@@ -177,16 +177,16 @@ jobs:
               "git clone https://github.com/tkwonn/imgdock.git",
               "cd /home/ubuntu/web/imgdock",
               "touch .env",  
-              "echo APP_ENV=\\\"${APP_ENV}\\\" >> .env",
-              "echo CLOUDFRONT_DOMAIN=\\\"${CLOUDFRONT_DOMAIN}\\\" >> .env",
-              "echo VITE_BASE_URL=\\\"${VITE_BASE_URL}\\\" >> .env",
-              "echo S3_BUCKET_NAME=\\\"${S3_BUCKET_NAME}\\\" >> .env",
-              "echo DATABASE_HOST=\\\"${DATABASE_HOST}\\\" >> .env",
-              "echo DATABASE_NAME=\\\"${DATABASE_NAME}\\\" >> .env",
-              "echo DATABASE_USER=\\\"${DATABASE_USER}\\\" >> .env",
-              "echo DATABASE_USER_PASSWORD=\\\"${DATABASE_USER_PASSWORD}\\\" >> .env",
-              "echo MEMCACHED_HOST=\\\"${MEMCACHED_HOST}\\\" >> .env",
-              "echo MEMCACHED_PORT=\\\"${MEMCACHED_PORT}\\\" >> .env",
+              "echo APP_ENV=\\\"${{ env.APP_ENV }}\\\" >> .env",
+              "echo CLOUDFRONT_DOMAIN=\\\"${{ env.CLOUDFRONT_DOMAIN }}\\\" >> .env",
+              "echo VITE_BASE_URL=\\\"${{ env.VITE_BASE_URL }}\\\" >> .env",
+              "echo S3_BUCKET_NAME=\\\"${{ env.S3_BUCKET_NAME }}\\\" >> .env",
+              "echo DATABASE_HOST=\\\"${{ env.DATABASE_HOST }}\\\" >> .env",
+              "echo DATABASE_NAME=\\\"${{ env.DATABASE_NAME }}\\\" >> .env",
+              "echo DATABASE_USER=\\\"${{ env.DATABASE_USER }}\\\" >> .env",
+              "echo DATABASE_USER_PASSWORD=\\\"${{ env.DATABASE_USER_PASSWORD }}\\\" >> .env",
+              "echo MEMCACHED_HOST=\\\"${{ env.MEMCACHED_HOST }}\\\" >> .env",
+              "echo MEMCACHED_PORT=\\\"${{ env.MEMCACHED_PORT }}\\\" >> .env",
               "sudo docker-compose -f compose-prod.yml up -d --pull always",
               "EOCMD",
               "sudo chmod +x /home/ubuntu/web/deploy_commands.sh",
@@ -202,11 +202,11 @@ jobs:
           COMMANDS_JSON=$(cat debug.json)
 
           COMMAND_ID=$(aws ssm send-command \
-            --instance-ids "${EC2_INSTANCE_ID}" \
+            --instance-ids "${{ env.EC2_INSTANCE_ID }}" \
             --document-name "AWS-RunShellScript" \
             --comment "Deploy application" \
             --parameters "$COMMANDS_JSON" \
-            --region "${AWS_REGION}" \
+            --region "${{ env.AWS_REGION }}" \
             --timeout-seconds 3600 \
             --query "Command.CommandId" \
             --output text)
@@ -215,22 +215,22 @@ jobs:
 
           aws ssm wait command-executed \
             --command-id "$COMMAND_ID" \
-            --instance-id "${EC2_INSTANCE_ID}" \
-            --region "${AWS_REGION}" || {
+            --instance-id "${{ env.EC2_INSTANCE_ID }}" \
+            --region "${{ env.AWS_REGION }}" || {
               echo "SSM command failed or timed out."
               aws ssm get-command-invocation \
-                --instance-id "${EC2_INSTANCE_ID}" \
+                --instance-id "${{ env.EC2_INSTANCE_ID }}" \
                 --command-id "$COMMAND_ID" \
-                --region "${AWS_REGION}" \
+                --region "${{ env.AWS_REGION }}" \
                 --query "StandardErrorContent" \
                 --output text
               exit 1
             }
 
           OUTPUT=$(aws ssm get-command-invocation \
-            --instance-id "${EC2_INSTANCE_ID}" \
+            --instance-id "${{ env.EC2_INSTANCE_ID }}" \
             --command-id "$COMMAND_ID" \
-            --region "${AWS_REGION}" \
+            --region "${{ env.AWS_REGION }}" \
             --query "StandardOutputContent" \
             --output text)
 
