@@ -170,8 +170,8 @@ jobs:
               "#!/usr/bin/env bash",
               "set -e",
               "if [ -d /home/ubuntu/web/imgdock ]; then",
-                "sudo chmod +x /home/ubuntu/web/imgdock/src/bin/cleanup.sh",
-                "sudo /home/ubuntu/web/imgdock/src/bin/cleanup.sh"
+              "  sudo chmod +x /home/ubuntu/web/imgdock/src/bin/cleanup.sh",
+              "  sudo /home/ubuntu/web/imgdock/src/bin/cleanup.sh",
               "fi",
               "cd /home/ubuntu/web",
               "sudo git clone --branch $GITHUB_BRANCH git@github.com:tkwonn/imgdock.git",
