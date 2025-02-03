@@ -184,7 +184,7 @@ jobs:
               "echo DATABASE_USER_PASSWORD=\\\"${{ env.DATABASE_USER_PASSWORD }}\\\" >> .env",
               "echo MEMCACHED_HOST=\\\"${{ env.MEMCACHED_HOST }}\\\" >> .env",
               "echo MEMCACHED_PORT=\\\"${{ env.MEMCACHED_PORT }}\\\" >> .env",
-              "sudo docker-compose -f compose-prod.yml up -d --pull always",
+              "sudo docker-compose -f compose-prod.yml up -d --pull always"
             ]
           }
           EOF
