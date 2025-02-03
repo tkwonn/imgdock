@@ -15,6 +15,7 @@ use Helpers\Settings;
     <title><?php echo htmlspecialchars($pageTitle); ?></title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link href="<?= htmlspecialchars(Settings::env('VITE_BASE_URL')) ?>css/app.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <?php if ($isUploadPage): ?>
         <link href="<?= htmlspecialchars(Settings::env('VITE_BASE_URL')) ?>css/upload.css" rel="stylesheet">
     <?php endif; ?>
@@ -25,8 +26,8 @@ use Helpers\Settings;
         <div class="d-flex align-items-center">
             <a class="navbar-brand fw-bold px-5 m-0" href="/"><?php echo htmlspecialchars($logoTitle); ?></a>
             <?php if (!$isUploadPage): ?>
-                <a href="/upload" id="uploadBtn" class="btn btn-success text-light">
-                    <i class="fas fa-plus"></i> New post
+                <a href="/upload" id="uploadBtn" class="btn btn-success text-light ps-2 pe-3 py-1">
+                    <i class="bi bi-plus fs-5" style="filter: drop-shadow(1px 0 currentColor)"></i> New post
                 </a>
             <?php endif; ?>
         </div>

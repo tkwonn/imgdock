@@ -38,12 +38,12 @@ use Helpers\Settings;
                     <?php endforeach; ?>
                 </div>
                 <!-- Left Arrow -->
-                <button class="scroll-arrow scroll-arrow-left translate-middle-y bg-transparent border-0 text-light">
-                    <i class="fas fa-chevron-left"></i>
+                <button class="scroll-arrow scroll-arrow-left translate-middle-y bg-transparent border-0 text-light me-2">
+                    <i class="bi bi-chevron-left" style="filter: drop-shadow(1px 0 currentColor)"></i>
                 </button>
                 <!-- Right Arrow -->
                 <button class="scroll-arrow scroll-arrow-right translate-middle-y bg-transparent border-0 text-light">
-                    <i class="fas fa-chevron-right"></i>
+                    <i class="bi bi-chevron-right" style="filter: drop-shadow(1px 0 currentColor)"></i>
                 </button>
             </div>
         </div>

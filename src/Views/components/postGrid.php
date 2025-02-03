@@ -15,16 +15,16 @@
             <option value="newest" selected>NEWEST</option>
             <option value="popular">POPULAR</option>
         </select>
-        <i class="fas fa-caret-down text-light position-absolute top-50 end-0 translate-middle-y me-3"></i>
+        <i class="bi bi-chevron-down text-light position-absolute top-50 end-0 translate-middle-y me-3" style="filter: drop-shadow(1px 0 currentColor); cursor:pointer;"></i>
     </div>
 
     <!-- Grid or Waterfall -->
     <div class="btn-group">
         <button type="button" class="btn bg-gray text-light btn-view active" data-view="grid" title="Grid view">
-            <i class="fa-solid fa-border-all"></i>
+            <i class="bi bi-grid-3x3"></i>
         </button>
         <button type="button" class="btn bg-gray text-light btn-view" data-view="waterfall" title="Waterfall view">
-            <i class="fa-solid fa-chart-simple"></i>
+            <i class="bi bi-columns-gap"></i>
         </button>
     </div>
 </div>
@@ -46,7 +46,7 @@
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <small class="muted-text">
-                                    <i class="fas fa-eye"></i> <?= number_format($post['view_count']) ?>
+                                    <i class="bi bi-eye"></i> <?= number_format($post['view_count']) ?>
                                 </small>
                                 <small class="muted-text">
                                     <?= htmlspecialchars($post['created_at']) ?>

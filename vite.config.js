@@ -20,12 +20,6 @@ export default defineConfig(({ mode }) => {
                     entryFileNames: 'js/[name].js',
                     chunkFileNames: 'js/[name]-[hash].js',
                     assetFileNames: ({name}) => {
-                        if (/fa-.*\.(woff2?|eot|ttf|otf|svg)$/.test(name)) {
-                            return 'fonts/[name][extname]'
-                        }
-                        if (/\.(woff2?|eot|ttf|otf|svg)$/.test(name)) {
-                            return 'fonts/[name][extname]'
-                        }
                         if (/\.css$/.test(name)) {
                             return 'css/[name][extname]'
                         }

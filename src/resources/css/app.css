@@ -1,5 +1,4 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
-@import '@fortawesome/fontawesome-free/css/all.min.css';
 
 *, *::before, *::after {
     box-sizing: border-box;
@@ -34,13 +33,13 @@ body {
 .scroll-arrow-left {
     position: absolute;
     top: 50%;
-    left: -20px;
+    left: -1.5rem;
 }
 
 .scroll-arrow-right {
     position: absolute;
     top: 50%;
-    right: -20px;
+    right: -1.5rem;
 }
 
 .btn-view.active {
@@ -51,18 +50,17 @@ body {
 .btn-custom-select {
     height: 38px;
     padding: 0.375rem 0.75rem;
-    padding-right: 2rem; /* 右側の余白を増やして矢印用のスペースを確保 */
+    padding-right: 2rem;
     border-radius: 0.25rem;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-image: none; /* デフォルトの矢印を完全に消す */
+    background-image: none;
     cursor: pointer;
 }
 
-/* カスタム矢印のスタイリング */
 .position-relative i.fas.fa-caret-down {
-    pointer-events: none; /* 矢印をクリックできないようにする */
+    pointer-events: none;
 }
 
 /* Image Size */

@@ -38,7 +38,7 @@ use Helpers\Settings;
                                                     aria-expanded="false"
                                                     style="position: relative;"
                                             >
-                                                <i class="fas fa-plus fa-sm"></i> Tag
+                                                <i class="bi bi-plus me-1"></i> Tag
                                             </button>
                                             <ul
                                                     class="dropdown-menu"

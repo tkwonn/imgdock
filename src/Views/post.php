@@ -18,7 +18,7 @@ use Helpers\Settings;
         <div class="post-container">
             <div class="position-relative">
                 <a href="/" class="btn btn-outline-light btn-sm back-button">
-                    <i class="fas fa-arrow-left fa-sm"></i>
+                    <i class="bi bi-arrow-left"></i>
                 </a>
                 <div class="card bg-gray">
                     <div class="card-body">
@@ -27,13 +27,13 @@ use Helpers\Settings;
                                 <a href="/api/images/<?= htmlspecialchars($post['s3_key']) ?>"
                                    download="<?= htmlspecialchars($post['title'] . '.' . $post['extension']) ?>"
                                    class="btn btn-outline-light btn-sm">
-                                    <i class="fas fa-download"></i>
+                                    <i class="bi bi-download"></i>
                                 </a>
                                 <button type="button" class="btn btn-outline-light btn-sm" data-action="share-x">
-                                    <i class="fab fa-x-twitter"></i>
+                                    <i class="bi bi-twitter-x"></i>
                                 </button>
                                 <button type="button" class="btn btn-outline-light btn-sm" data-action="copy-url">
-                                    <i class="fas fa-link"></i>
+                                    <i class="bi bi-link-45deg"></i>
                                 </button>
                             </div>
 
