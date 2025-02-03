@@ -8,10 +8,7 @@ on:
       - 'public/**'
       - 'src/**'
       - 'services/**'
-      - 'composer.json'
-      - 'composer.lock'
-      - 'package.json'
-      - 'package-lock.json'
+      - 'compose-prod.yml'
       - '.github/workflows/**'
 
 permissions:
@@ -59,7 +56,7 @@ jobs:
       - name: Validate composer.json and composer.lock 👀
         run: composer validate --strict
 
-      - name: Get Composer Cache Directory 📂
+      - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
@@ -159,6 +156,20 @@ jobs:
           role-session-name: ${{ env.SESSION_NAME }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Build static assets ⏳
+        run: npm run build
+
+      - name: Sync assets to S3 📂
+        run:  |
+          aws s3 sync public/assets s3://${{ env.S3_BUCKET_NAME }}/assets --region ${{ env.AWS_REGION }}
+
+      - name: Invalidate CloudFront Cache 🌩
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} \
+            --paths "/assets/*" \
+            --region ${{ env.AWS_REGION }}
+
       - name: Deploy via SSM
         shell: bash
         run: |
@@ -184,6 +195,7 @@ jobs:
               "echo DATABASE_USER_PASSWORD=\\\"${{ env.DATABASE_USER_PASSWORD }}\\\" >> .env",
               "echo MEMCACHED_HOST=\\\"${{ env.MEMCACHED_HOST }}\\\" >> .env",
               "echo MEMCACHED_PORT=\\\"${{ env.MEMCACHED_PORT }}\\\" >> .env",
+              "sudo chmod +x /home/ubuntu/web/imgdock/src/bin/db_backup.sh",
               "sudo docker-compose -f compose-prod.yml up -d --pull always"
             ]
           }

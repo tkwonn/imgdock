@@ -1,6 +1,7 @@
 # imgdock
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/tkwonn/imgdock?color=chocolate)](https://github.com/tkwonn/imgdock/commits/)
+[![deploy to EC2](https://github.com/tkwonn/imgdock/actions/workflows/deploy.yml/badge.svg)](https://github.com/tkwonn/imgdock/actions/workflows/deploy.yml)
 
 ## What is this
 
