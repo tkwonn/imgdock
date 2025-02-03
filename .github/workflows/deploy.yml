@@ -166,7 +166,7 @@ jobs:
           cat << 'SHOWJSON' > debug.json
           {
             "commands": [
-              "sudo sh -c \"cat << 'EOCMD' > /tmp/deploy_commands.sh\"",
+              "sudo sh -c \"cat << 'EOCMD' > /home/ubuntu/web/deploy_commands.sh\"",
               "#!/usr/bin/env bash",
               "set -e",
 
@@ -176,7 +176,7 @@ jobs:
 
               "# 2) Clone New repository",
               "cd /home/ubuntu/web",
-              "sudo git clone --branch $GITHUB_BRANCH https://github.com/tkwonn/imgdock.git imgdock",
+              "sudo git clone --branch $GITHUB_BRANCH git@github.com:tkwonn/imgdock.git",
 
               "# 3) .env setup",
               "sudo chmod +x /home/ubuntu/web/imgdock/src/bin/setup_env.sh",
