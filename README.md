@@ -126,21 +126,15 @@ Frontend Restrictions (Uppy Library)
 - The maximum file size for non-animated images (e.g., `jpg`, `jpeg`, `png`) is 10MB. 
 - For animated images (e.g., `gif`), the limit is 20MB.
 
-<br>
-
 Backend Restrictions (PHP)
 - `upload_max_filesize`: 20 MB (maximum size of a single uploaded file).
 - `post_max_size`: 20 MB (maximum size of the entire POST request).
 - `memory_limit`: 256 MB (maximum memory allocated to PHP scripts).
 - `max_execution_time`: 300 seconds (maximum time a script can run).
 
-<br>
-
 Web Server Rate Limiting (Nginx)
 - File upload requests are rate-limited to 1 request per second with a burst of 5 requests. 
 - This prevents abuse and ensures fair usage of the service.
-
-<br>
 
 ### Input Sanitization and Character Escaping
 
@@ -159,12 +153,14 @@ The pipeline consists of three main stages:
 2. Docker Image Building and Publishing
 3. AWS Deployment
 
+<br>
+
+![Workflow Diagram](docs/workflow.svg)
+
 ### Build and Lint Stage
 
 - Dependency caching using NPM and Composer to speed up builds
 - Code quality checks using PHP CS Fixer
-
-<br>
 
 ### Docker Build and Push Stage
 
@@ -173,8 +169,6 @@ The pipeline consists of three main stages:
     2. Nginx server image (`imgdock-prod:php-{sha}`)
 - Implements Docker layer caching using GitHub Actions cache
 - Pushes images to Docker Hub with both latest and commit-specific tags
-
-<br>
 
 ### AWS Deployment Stage
 
@@ -194,7 +188,3 @@ The pipeline consists of three main stages:
 - Old repository and containers are removed before new deployment (Cleanup script: `/src/bin/cleanup.sh`)
 - Sets up environment variables
 - Pulls latest Docker images
-
-<br>
-
-![Workflow Diagram](docs/workflow.svg)
