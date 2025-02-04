@@ -3,7 +3,17 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/tkwonn/imgdock?color=chocolate)](https://github.com/tkwonn/imgdock/commits/)
 [![deploy to EC2](https://github.com/tkwonn/imgdock/actions/workflows/deploy.yml/badge.svg)](https://github.com/tkwonn/imgdock/actions/workflows/deploy.yml)
 
-## What is this
+## Table of Contents
+- [About](#-about)
+- [Demo](#-demo)
+- [Built with](#️-built-with)
+- [Cloud Architecture Diagram](#️-cloud-architecture-diagram)
+- [ER Diagram](#️-er-diagram)
+- [Storage Structure](#-storage-structure)
+- [Security Measures](#️-security-measures)
+- [CI/CD](#-cicd)
+
+## 💡 About
 
 Similar to [imgur](https://imgur.com/), this web application allows users to upload, share, and view images without requiring a user account. It's useful in the following situations:
 
@@ -15,46 +25,26 @@ Supported file types are `jpg`, `jpeg`, `png`, and `gif`.
 
 URL: [imgdock.com](https://imgdock.com)
 
-<br>
+## 🎨 Demo
 
-## Table of Contents
-1. [Demo](#demo)
-2. [Built with](#built-with)
-3. [Cloud Architecture Diagram](#cloud-architecture-diagram)
-4. [ER Diagram](#er-diagram)
-5. [Storage Structure](#storage-structure)
-6. [Security Measures](#security-measures)
-    1. [File Size and Upload Limits](#file-size-and-upload-limits)
-    2. [Input Sanitization and Character Escaping](#input-sanitization-and-character-escaping)
-7. [CI/CD](#cicd)
-    1. [Build and Lint Stage](#build-and-lint-stage)
-    2. [Docker Build and Push Stage](#docker-build-and-push-stage)
-    3. [AWS Deployment Stage](#aws-deployment-stage)
-
-<br>
-
-## Demo
-
-### Upload
+#### Upload
 Users can upload an image, optionally add tags, and submit.    
 A **deletion URL** is generated on the fly (one-time only) so that the user can delete their upload later.
 
 https://github.com/user-attachments/assets/b0ed9144-120e-4b02-9fe1-ff6c94e961b8
 
-### View
+#### View
 This app supports two viewing modes: a **Grid mode** (uniform thumbnails) and a **Waterfall/Masonry mode** (like Pinterest).    
 You can also toggle sorting between **Newest** and **Popular** (view count) order.
 
 https://github.com/user-attachments/assets/9a2dd295-0f58-4829-ae22-7b6c85ce3b1c
 
-### Delete
+#### Delete
 When you open the **delete URL** (provided at upload time), the post is removed permanently.
 
 https://github.com/user-attachments/assets/e0114f3e-e569-4f23-95e2-39ef1ddf8e0a
 
-<br>
-
-## Built with
+## 🏗️ Built with
 
 | **Category**  | **Technology**                                                                                             |
 |---------------|------------------------------------------------------------------------------------------------------------|
@@ -70,15 +60,11 @@ https://github.com/user-attachments/assets/e0114f3e-e569-4f23-95e2-39ef1ddf8e0a
 | Container     | Docker, Docker Compose, [Docker Hub](https://hub.docker.com/repository/docker/tkwonn/imgdock-prod/general) |
 | CDN           | Amazon CloudFront (JavaScript, CSS, and images)                                                                                          |
 
-<br>
-
-## Cloud Architecture Diagram
+## 🏛️ Cloud Architecture Diagram
 
 ![Cloud Architecture](docs/cloud-architecture.svg)
 
-<br>
-
-## ER Diagram
+## 🗄️ ER Diagram
 
 ![ER Diagram](https://github.com/user-attachments/assets/dd4abee3-4de5-4383-a18e-b8760d81a619)
 
@@ -86,9 +72,7 @@ https://github.com/user-attachments/assets/e0114f3e-e569-4f23-95e2-39ef1ddf8e0a
 - `tags`: Table for managing tags and their descriptions
 - `post_tags`: Junction table implementing many-to-many relationship between posts and tags
 
-<br>
-
-## Storage Structure
+## 📂 Storage Structure
 
 To organize uploaded images efficiently and ensure scalability, the application stores images in an Amazon S3 bucket using a structured folder and naming convention. 
 The year/month directory structure organizes images by upload date, which simplifies file management and enables automated lifecycle policies such as archiving or deleting older content.
@@ -114,9 +98,7 @@ Unique String Generation:
 - The `<unique-string>` part is generated using a cryptographically secure random ID via PHP's `random_bytes()` function, which sources entropy from `/dev/urandom`.
 - It uses a 64-character URL-safe alphabet (0-9, A-Z, a-z, -, _) and is 8 characters long, providing 64⁸ = 281,474,976,710,656 possible combinations.
 
-<br>
-
-## Security Measures
+## 🛡️ Security Measures
 
 ### File Size and Upload Limits
 
@@ -142,9 +124,7 @@ Web Server Rate Limiting (Nginx)
 - All database inputs are parameterized using `mysqli` prepared statements to prevent SQL injection.
 - HTML special characters are escaped using `htmlspecialchars()` when displaying titles and metadata.
 
-<br>
-
-## CI/CD
+## 🚀 CI/CD
 
 This project implements a CI/CD pipeline using GitHub Actions for automated testing, building, and deployment to AWS infrastructure.
 
