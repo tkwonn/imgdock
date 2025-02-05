@@ -39,7 +39,7 @@ In this application, Memcached is specifically used for:
 - Tag Lookups (e.g., `findAllTags`, `findTagById`): When tags are modified (by an administrator), the cache can be invalidated or allowed to expire via a short TTL.
 
 How it works:
-- Check the Memcached cache for a key such as "countAllPosts" or "all_tags".
+- Check the Memcached cache for a key such as "all_tags".
 - If a cached value is present and valid, return it immediately.
 - If the key is missing or has expired, execute the database query, store the result in Memcached for a defined TTL (e.g., 60–300 seconds), then return the fresh data.
 
