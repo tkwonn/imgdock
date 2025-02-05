@@ -100,7 +100,7 @@ Unique String Generation:
 
 ## 🛡️ Security Measures
 
-### File Size and Upload Limits
+#### 1. File Size and Upload Limits
 
 To ensure efficient resource usage and prevent abuse, the application enforces specific file size and upload limits.
 
@@ -118,7 +118,7 @@ Web Server Rate Limiting (Nginx)
 - File upload requests are rate-limited to 1 request per second with a burst of 5 requests. 
 - This prevents abuse and ensures fair usage of the service.
 
-### Input Sanitization and Character Escaping
+#### 2. Input Sanitization and Character Escaping
 
 - Special characters (`\n`, `\t`, `\'`, `\"`, `\`) are properly escaped/unescaped using PHP's `json_encode()` and `json_decode()` methods.
 - All database inputs are parameterized using `mysqli` prepared statements to prevent SQL injection.
