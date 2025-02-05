@@ -158,7 +158,7 @@ Asset Deployment
 - Invalidates CloudFront cache for updated assets
 
 Application Deployment
-- Old repository and containers are removed before new deployment (Cleanup script: `/src/bin/cleanup.sh`)
+- Old repository and containers are removed before new deployment ([Cleanup script](https://github.com/tkwonn/imgdock/blob/main/src/bin/cleanup.sh))
 - Sets up environment variables
 - Pulls and run latest Docker images
 
