@@ -128,21 +128,17 @@ Web Server Rate Limiting (Nginx)
 
 This project implements a CI/CD pipeline using GitHub Actions for automated testing, building, and deployment to AWS infrastructure.
 
-The pipeline consists of three main stages:
+The pipeline consists of three jobs:
 1. Build and Lint
 2. Docker Image Building and Publishing
 3. AWS Deployment
 
-<br>
-
-![Workflow Diagram](docs/workflow.svg)
-
-### Build and Lint Stage
+#### 1. Build and Lint ⏳
 
 - Dependency caching using NPM and Composer to speed up builds
 - Code quality checks using PHP CS Fixer
 
-### Docker Build and Push Stage
+#### 2. Docker Build and Push 🐳
 
 - Builds two Docker images:
     1. PHP application image (`imgdock-prod:php-{sha}`)
@@ -150,21 +146,22 @@ The pipeline consists of three main stages:
 - Implements Docker layer caching using GitHub Actions cache
 - Pushes images to Docker Hub with both latest and commit-specific tags
 
-### AWS Deployment Stage
+#### 3. AWS Deployment 🌩
 
-#### Security
-
+Secure Cloud Authentication
 - Secure AWS Authentication using OpenID Connect (short-lived tokens)
 - Minimal IAM permissions to ensure secure cloud role operations
 - AWS Systems Manager (SSM) for secure remote command execution (no direct SSH access or security group changes)
 
-#### Asset Deployment
-
-- Syncs built assets (JS and CSS files) to S3 bucket
+Asset Deployment
+- Syncs built assets (JavaScript and CSS files) to S3 bucket
 - Invalidates CloudFront cache for updated assets
 
-#### Application Deployment
-
+Application Deployment
 - Old repository and containers are removed before new deployment (Cleanup script: `/src/bin/cleanup.sh`)
 - Sets up environment variables
-- Pulls latest Docker images
+- Pulls and run latest Docker images
+
+<br>
+
+![Workflow Diagram](docs/workflow.svg)
